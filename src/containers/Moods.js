@@ -1,69 +1,56 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 import Controls from '../components/controls/Controls';
 import Face from '../components/face/Face';
+import getFace from '../components/face/GetFace';
 
-const actions = [
-  { name: 'DRINK_COFFEE', text: 'Drink Coffee', stateName: 'coffees' },
-  { name: 'EAT_SNACK', text: 'Snack', stateName: 'snacks' },
-  { name: 'TAKE_NAP', text: 'Nap', stateName: 'naps' },
-  { name: 'STUDY', text: 'Study', stateName: 'studies' },
-];
+const Moods = ({ handleSelection, coffees, snacks, naps, studies }) => {
+  const face = getFace({ coffees, snacks, naps, studies });
+  
+  const actions = [
+    { name: 'DRINK_COFFEE', text: 'Drink Coffee', count: coffees },
+    { name: 'EAT_SNACK', text: 'Snack', count: snacks },
+    { name: 'TAKE_NAP', text: 'Nap', count: naps },
+    { name: 'STUDY', text: 'Study', count: studies },
+  ];
 
-export const isTired = state => state.coffees < 1 && state.naps < 1;
-export const isHyper = state => state.coffees > 3;
-export const isEducated = state => state.studies > 2;
-export const isHungry = state => state.snacks < 1;
-
-export const getFace = state => {
-  if(isTired(state) && isHungry(state)) return '🤬';
-  if(isHyper(state) && isHungry(state)) return '🤮';
-  if(isTired(state)) return '😴';
-  if(isHyper(state)) return '🙀';
-  if(isEducated(state)) return '🤯';
-  if(isHungry(state)) return '😡';
-
-  return '😀';
+  return (
+    <>
+      <Controls actions={actions} handleSelection={handleSelection}/>
+      <Face emoji={face} />
+    </>
+  );
 };
 
-export default class Moods extends Component {
-  state = {
-    coffees: 0,
-    snacks: 0,
-    naps: 0,
-    studies: 0
-  }
+Moods.propTypes = {
+  handleSelection: PropTypes.func.isRequired,
+  coffees: PropTypes.number.isRequired,
+  snacks: PropTypes.number.isRequired,
+  naps: PropTypes.number.isRequired,
+  studies: PropTypes.number.isRequired
+};
 
-  handleSelection = name => {
-    switch(name) {
-      case 'DRINK_COFFEE':
-        this.setState(state => ({ coffees: state.coffees + 1 }));
-        break;
-      case 'EAT_SNACK':
-        this.setState(state => ({ snacks: state.snacks + 1 }));
-        break;
-      case 'TAKE_NAP':
-        this.setState(state => ({ naps: state.naps + 1 }));
-        break;
-      case 'STUDY':
-        this.setState(state => ({ studies: state.studies + 1 }));
-        break;
-      default:
-        console.log(`unhandled name: ${name}`);
-    }
-  }
+const mapStateToProps = state => ({
+  coffees: state.coffees,
+  snacks: state.snacks,
+  naps: state.naps,
+  studies: state.studies
+});
 
-  render() {
-    const face = getFace(this.state);
-    const controlActions = actions.map(action => ({
-      ...action,
-      count: this.state[action.stateName]
-    }));
-
-    return (
-      <>
-        <Controls actions={controlActions} handleSelection={this.handleSelection}/>
-        <Face emoji={face} />
-      </>
-    );
+const mapDispatchToProps = dispatch => ({
+  handleSelection(name) {
+    dispatch({
+      type: name
+    });
   }
-}
+});
+
+const MoodsContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Moods);
+
+export default MoodsContainer;
+
