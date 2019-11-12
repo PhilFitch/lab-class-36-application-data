@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 
 import Controls from '../components/controls/Controls';
 import Face from '../components/face/Face';
-import getFace from '../components/face/GetFace';
+import { getCoffees, getSnacks, getNaps, getStudies, getFace } from '../selectors/moodSelectors';
+import { drinkCoffee, eatSnack, takeNap, study } from '../actions/moodActions';
 
 const Moods = ({ handleSelection, coffees, snacks, naps, studies }) => {
-  const face = getFace({ coffees, snacks, naps, studies });
   
   const actions = [
     { name: 'DRINK_COFFEE', text: 'Drink Coffee', count: coffees },
@@ -16,6 +16,8 @@ const Moods = ({ handleSelection, coffees, snacks, naps, studies }) => {
     { name: 'STUDY', text: 'Study', count: studies },
   ];
 
+  const face = getFace({ coffees, snacks, naps, studies });
+  
   return (
     <>
       <Controls actions={actions} handleSelection={handleSelection}/>
@@ -33,24 +35,26 @@ Moods.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  coffees: state.coffees,
-  snacks: state.snacks,
-  naps: state.naps,
-  studies: state.studies
+  coffees: getCoffees(state),
+  snacks: getSnacks(state),
+  naps: getNaps(state),
+  studies: getStudies(state)
 });
+
+const inputFactoryMethod = {
+  DRINK_COFFEE: drinkCoffee(),
+  EAT_SNACK: eatSnack(),
+  TAKE_NAP: takeNap(),
+  STUDY: study()
+};
 
 const mapDispatchToProps = dispatch => ({
   handleSelection(name) {
-    dispatch({
-      type: name
-    });
+    dispatch(inputFactoryMethod[name]);
   }
 });
 
-const MoodsContainer = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Moods);
-
-export default MoodsContainer;
-
