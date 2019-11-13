@@ -11,8 +11,8 @@ const History = ({ saveGame, coffees, snacks, naps, studies }) => {
 
   return (
     <section className={styles.History}>
-      <button onClick = {() => saveGame({ coffees, snacks, naps, studies })} >Save</button>
-
+      <button onClick={() => saveGame({ coffees, snacks, naps, studies })}>Save</button>
+      
     </section>
   );
 };
