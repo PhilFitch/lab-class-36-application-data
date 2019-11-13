@@ -2,15 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { getCoffees, getSnacks, getNaps, getStudies, getFace } from '../selectors/moodSelectors';
+import { getCoffees, getSnacks, getNaps, getStudies } from '../selectors/moodSelectors';
 import { save } from '../actions/saveGameActions';
+
+import styles from './History.css';
 
 const History = ({ saveGame, coffees, snacks, naps, studies }) => {
 
   return (
-    <>
+    <section className={styles.History}>
       <button onClick = {() => saveGame({ coffees, snacks, naps, studies })} >Save</button>
-    </>
+
+    </section>
   );
 };
 
