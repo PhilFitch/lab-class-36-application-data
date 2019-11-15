@@ -1,40 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Moods container matches a snapshot 1`] = `
-<Fragment>
-  <Controls
-    actions={
-      Array [
-        Object {
-          "count": 0,
-          "name": "DRINK_COFFEE",
-          "stateName": "coffees",
-          "text": "Drink Coffee",
-        },
-        Object {
-          "count": 0,
-          "name": "EAT_SNACK",
-          "stateName": "snacks",
-          "text": "Snack",
-        },
-        Object {
-          "count": 0,
-          "name": "TAKE_NAP",
-          "stateName": "naps",
-          "text": "Nap",
-        },
-        Object {
-          "count": 0,
-          "name": "STUDY",
-          "stateName": "studies",
-          "text": "Study",
-        },
-      ]
+<Moods
+  coffees={0}
+  handleSelection={[Function]}
+  naps={0}
+  snacks={0}
+  store={
+    Object {
+      "dispatch": [MockFunction],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+      Symbol(observable): [Function],
     }
-    handleSelection={[Function]}
-  />
-  <Face
-    emoji="🤬"
-  />
-</Fragment>
+  }
+  studies={0}
+/>
 `;
