@@ -3,10 +3,10 @@ export const getSnacks = state => state.moods.snacks;
 export const getNaps = state => state.moods.naps;
 export const getStudies = state => state.moods.studies;
 
-const isTired = state => state.coffees < 1 && state.naps < 1;
-const isHyper = state => state.coffees > 3;
-const isEducated = state => state.studies > 2;
-const isHungry = state => state.snacks < 1;
+export const isTired = state => state.coffees < 1 && state.naps < 1;
+export const isHyper = state => state.coffees > 3;
+export const isEducated = state => state.studies > 2;
+export const isHungry = state => state.snacks < 1;
 
 export const getFace = state => {
   if(isTired(state) && isHungry(state)) return '🤬';
