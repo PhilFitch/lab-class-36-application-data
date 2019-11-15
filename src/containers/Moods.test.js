@@ -1,6 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Moods, { isTired, isHyper, isEducated, isHungry, getFace } from './Moods';
+import Moods from './Moods';
+import store from '../store';
+import { isTired, isHyper, isEducated, isHungry, getFace } from '../selectors/moodSelectors';
 
 describe('Moods', () => {
   describe('mood selectors', () => {
@@ -66,37 +68,47 @@ describe('Moods', () => {
   });
 
   describe('container', () => {
+    let wrapper;
+    store.dispatch = jest.fn();
+    beforeEach(() => {
+      wrapper = shallow(<Moods store={store} />).dive();
+    });
+
     it('matches a snapshot', () => {
-      const wrapper = shallow(<Moods />);
       expect(wrapper).toMatchSnapshot();
     });
 
     it('updates state on DRINK_COFFEE selection', () => {
-      const wrapper = shallow(<Moods />);
-      wrapper.instance().handleSelection('DRINK_COFFEE');
+      wrapper.props().handleSelection('DRINK_COFFEE');
 
-      expect(wrapper.state('coffees')).toEqual(1);
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: 'DRINK_COFFEE'
+      });
     });
 
     it('updates state on TAKE_NAP selection', () => {
-      const wrapper = shallow(<Moods />);
-      wrapper.instance().handleSelection('TAKE_NAP');
+      wrapper.props().handleSelection('TAKE_NAP');
 
-      expect(wrapper.state('naps')).toEqual(1);
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: 'TAKE_NAP'
+      });
     });
 
     it('updates state on EAT_SNACK selection', () => {
-      const wrapper = shallow(<Moods />);
-      wrapper.instance().handleSelection('EAT_SNACK');
+      wrapper.props().handleSelection('EAT_SNACK');
 
-      expect(wrapper.state('snacks')).toEqual(1);
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: 'EAT_SNACK'
+      });
     });
 
     it('updates state on STUDY selection', () => {
-      const wrapper = shallow(<Moods />);
-      wrapper.instance().handleSelection('STUDY');
+      wrapper.props().handleSelection('STUDY');
 
-      expect(wrapper.state('studies')).toEqual(1);
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: 'STUDY'
+      });
     });
   });
 });
+
